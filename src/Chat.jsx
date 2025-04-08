@@ -63,7 +63,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h2>Chat Room</h2>
+        <h2>Hammad ki batin</h2>
         <button onClick={handleSignOut}>Logout</button>
       </div>
 
