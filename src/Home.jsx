@@ -6,54 +6,30 @@ const Home = () => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [lat, setLat] = useState(null);
-  const [long, setLong] = useState(null);
-
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success, err);
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  }
-
-  function success(position) {
-    setLat(position.coords.latitude);
-    setLong(position.coords.longitude);
-  }
-
-  function err() {
-    alert("Sorry, no position available.");
-  }
 
   useEffect(() => {
-    getLocation();
-  }, []); // This will only run once when the component mounts.
+    const fetchWeather = async () => {
+      try {
+        const baseUrl = "http://api.weatherapi.com/v1";
+        const apiKey = "5e4806a80d2541a0b6f115425250704"; // Your API key
 
-  useEffect(() => {
-    if (lat && long) {
-      // Base URL and API key
-      const baseUrl = "http://api.weatherapi.com/v1";
-      const apiKey = "5e4806a80d2541a0b6f115425250704"; // Your actual API key
-
-      // Fetch weather data
-      axios
-        .get(`${baseUrl}/current.json`, {
+        const response = await axios.get(`${baseUrl}/current.json`, {
           params: {
             key: apiKey,
-            q: `${lat},${long}`, // Use dynamic latitude and longitude
+            q: "Karachi", // Static city
           },
-        })
-        .then((response) => {
-          setWeather(response.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError("Failed to fetch weather data");
-          setLoading(false);
         });
-    }
-  }, [lat, long]); // This will run when lat or long changes
+
+        setWeather(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch weather data");
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, []); // Only once when the component mounts
 
   return (
     <div className="home-container">
@@ -68,6 +44,9 @@ const Home = () => {
         {weather && (
           <div className="weather-card">
             <h2>Weather in {weather.location.name}</h2>
+            <h4>
+              {weather.location.region}, {weather.location.country}
+            </h4>
             <img
               src={`http:${weather.current.condition.icon}`}
               alt={weather.current.condition.text}
