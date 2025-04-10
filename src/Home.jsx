@@ -35,7 +35,7 @@ const Home = () => {
     <div className="home-container">
       <div className="container">
         <h1>Welcome to Home Page!</h1>
-        <p>You have successfully logged in or signed up.</p>
+        <p>You need to login to use the chat option.</p>
 
         {/* Display loading, error, or weather info */}
         {loading && <p className="loading-message">Loading weather data...</p>}
