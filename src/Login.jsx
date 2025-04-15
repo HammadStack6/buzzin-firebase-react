@@ -11,7 +11,8 @@ const Login = () => {
   const navigate = useNavigate(); // <-- Initialize navigate
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    //returning the value
+    e.preventDefault(); //ye data bheje ga or page refresh kare ga
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("Login successful");
